@@ -3,7 +3,18 @@
 ophir.php is a lightweight script that parses an <b>open document</b> file and outputs a <b><i>simple</i> HTML</b> file, with very few tags (contrarily to most other tools that do the same thing).
 
 ## Features
-Currently, the script parses bold (b tag), italic (i tag), underline (u tag), quotations (blockquote tag), images (using data URIs), links, headings (h1, h2, ...), lists (ul and li), tables (table tr and td) annotations and footnotes.
+Currently, the script can convert the following:
+ - bold (```<strong>``` tag)
+ - italic (```<i>``` tag)
+ - underline (```<u>``` tag)
+ - quotations (```<blockquote>``` tag)
+ - images (using data URIs)
+ - links
+ - headings (h1, h2, ...)
+ - lists (ul and li)
+ - tables (table tr and td)
+ - annotations
+ - footnotes.
 
 Ophir.php can also **ignore** or **remove** some tags on demand. This can be useful if you want to extract *only unformatted text* from a document, or if you don't want tables, footnotes or annotations in the resulting HTML, or if the application that generated the ODT file produced unnecessary formatting informations ...
 

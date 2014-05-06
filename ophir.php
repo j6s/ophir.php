@@ -105,16 +105,8 @@ function odt2html($odt_file, $xml_string=NULL) {
     $translation_table['text:table-of-content'] = 'div class="odt-table-of-contents"';
   }
  $translation_table['text:line-break'] = 'br';
-	/*if ($_ophir_odt_import_conf["features"]["break"]===0){$translation_table['text:line-break'] = FALSE;}
-	elseif($_ophir_odt_import_conf["features"]["break"]===2){
-    	$translation_table['text:line-break'] = 'br';
-    	echo "<h1>".$_ophir_odt_import_conf["features"]["break"]."</h1>";
- 	 }*/
-  
 
-  //$xml->read(); echo "\n<br><code>\n" .str_replace("&lt", "\n<br><br>&lt", htmlspecialchars($xml->readInnerXML())). "\n</code><br>\n\n";
   while ($xml->read()) {
-    //var_dump($xml->name, $xml->nodeType, $xml->isEmptyElement, ($xml->hasValue)?$xml->value:FALSE); echo "\n<br>\n";
     $opened_tags = array();//This array will contain the HTML tags opened in every iteration
 
     if ($xml->nodeType === XMLReader::END_ELEMENT) {//Handle a closing tag
@@ -140,7 +132,6 @@ function odt2html($odt_file, $xml_string=NULL) {
         ) {//Handle tags
       switch ($xml->name) {
         case "#text"://Text
-          //$html .= str_replace(array("<",">"),array("&lt;","&gt;"), $xml->value);
           $html .= htmlspecialchars($xml->value);
           break;
         case "text:h"://Title
@@ -182,7 +173,7 @@ function odt2html($odt_file, $xml_string=NULL) {
             break;
           }
           elseif ($_ophir_odt_import_conf["features"]["image"]===1) break;
-          
+
           $image_file = 'zip://' . $odt_file . '#' . $xml->getAttribute("xlink:href");
           if (isset($_ophir_odt_import_conf["images_folder"]) &&
               is_dir($_ophir_odt_import_conf["images_folder"]) ) {
@@ -274,7 +265,6 @@ function odt2html($odt_file, $xml_string=NULL) {
               $annotation_date = date("jS \of F Y, H\h i\m", strtotime($xml->readString()));
             }
             elseif ($xml->nodeType == XMLReader::ELEMENT) {
-              //echo "<h1>Contenu!!" . $xml->readString(). "</h1>";
               $annotation_content .= $xml->readString();
               $xml->next();
             }

@@ -206,13 +206,13 @@ function odt2html($odt_file, $xml_string=NULL) {
             ) {
             if ($xml->name == "style:text-properties") {
               if ($xml->getAttribute("fo:font-style") == "italic")
-                  $styles[$name]["tags"][] = "i"; //Creates the style and add <i> to its tags
+                  $styles[$name]["tags"][] = "em"; //Creates the style and add <em> to its tags
 
               if ($xml->getAttribute("fo:font-weight") == "bold")
-                  $styles[$name]["tags"][] = "b"; //Creates the style and add <b> to its tags
+                  $styles[$name]["tags"][] = "strong"; //Creates the style and add <strong> to its tags
 
               if ($xml->getAttribute("style:text-underline-style") == "solid")
-                  $styles[$name]["tags"][] = "u"; //Creates the style and add <b> to its tags
+                  $styles[$name]["tags"][] = "u"; //Creates the style and add <u> to its tags
 
             }
           }

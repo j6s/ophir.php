@@ -1,3 +1,4 @@
 {
-	"name": "lovasoa/ophir"
+	"name": "lovasoa/ophir",
+	"description": "Convert ODT (OpenDocument) files to HTML"
 }

@@ -23,10 +23,12 @@ $_ophir_odt_import_conf = array(
     "note" => 2,
     "annotation" => 2,
     'table of contents' => 0,
-    /*"break" => 2,*/
     ),
   "images_folder" => "images"
 );
+
+// Export the configuration variable that will be overridden by library users
+$OPHIR_CONF = $_ophir_odt_import_conf;
 
 function ophir_is_image ($file) {
     $image_extensions = array("jpg", "jpeg", "png", "gif", "svg");

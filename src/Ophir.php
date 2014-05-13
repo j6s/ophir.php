@@ -1,9 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: thephpjo
- * Date: 13.05.14
- * Time: 23:11
+ * @file
+ * ODT to HTML conversion functions
+ *
+ * Two functions are defined here : the first extracts the contents as XML from
+ * the ODT file. The second parses the XML to produce HTML.
  */
 
 namespace lovasoa;

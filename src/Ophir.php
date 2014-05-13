@@ -155,8 +155,9 @@ class Ophir
 						$tags = @$styles[$xml->getAttribute("text:style-name")]["tags"];
 						if (!($tags && !in_array("blockquote", $tags))) {
 							// Do not print a <p> immediatly after or before a <blockquote>
-							$opened_tags[] = "p";
 							$html .= "\n<p>";
+							if ($xml->isEmptyElement) $html .= "</p>";
+							else $opened_tags[] = "p";
 						}
 						break;
 

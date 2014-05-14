@@ -82,4 +82,34 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 		$this->assertContains("<h3>This is a h3</h3>",$this->html,"testing h3");
 	}
 
+	public function testsetConfiguration(){
+		$this->ophir->setConfiguration(Ophir::HEADER,		Ophir::NONE);
+		$this->ophir->setConfiguration(Ophir::LISTS,		Ophir::NONE);
+		$this->ophir->setConfiguration(Ophir::TABLE,		Ophir::NONE);
+		$this->ophir->setConfiguration(Ophir::FOOTNOTE,		Ophir::NONE);
+		$this->ophir->setConfiguration(Ophir::LINK,			Ophir::NONE);
+		$this->ophir->setConfiguration(Ophir::IMAGE,		Ophir::NONE);
+		$this->ophir->setConfiguration(Ophir::NOTE,			Ophir::NONE);
+		$this->ophir->setConfiguration(Ophir::ANNOTATION, 	Ophir::NONE);
+		$this->ophir->setConfiguration(Ophir::TOC,			Ophir::NONE);
+
+		foreach($this->ophir->getConfiguration() as $name=>$value){
+			$this->assertEquals(Ophir::NONE,$value);
+		}
+
+		$this->ophir->setConfiguration(Ophir::HEADER,		Ophir::ALL);
+		$this->ophir->setConfiguration(Ophir::LISTS,		Ophir::ALL);
+		$this->ophir->setConfiguration(Ophir::TABLE,		Ophir::ALL);
+		$this->ophir->setConfiguration(Ophir::FOOTNOTE,		Ophir::ALL);
+		$this->ophir->setConfiguration(Ophir::LINK,			Ophir::ALL);
+		$this->ophir->setConfiguration(Ophir::IMAGE,		Ophir::ALL);
+		$this->ophir->setConfiguration(Ophir::NOTE,			Ophir::ALL);
+		$this->ophir->setConfiguration(Ophir::ANNOTATION, 	Ophir::ALL);
+		$this->ophir->setConfiguration(Ophir::TOC,			Ophir::ALL);
+
+		foreach($this->ophir->getConfiguration() as $name=>$value){
+			$this->assertEquals(Ophir::ALL,$value);
+		}
+	}
+
 }

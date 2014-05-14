@@ -160,8 +160,9 @@ class Ophir
 						$tags = @$styles[$xml->getAttribute("text:style-name")]["tags"];
 						if (!($tags && !in_array("blockquote", $tags))) {
 							// Do not print a <p> immediatly after or before a <blockquote>
-							$opened_tags[] = "p";
 							$html .= "\n<p>";
+							if ($xml->isEmptyElement) $html .= "</p>";
+							else $opened_tags[] = "p";
 						}
 						break;
 
@@ -211,9 +212,9 @@ class Ophir
 
 						if ($xml->isEmptyElement) break; //We can't handle that at the moment
 						while ( $xml->read() && //Read one tag
-							($xml->name != "style:style" || $xml->nodeType != XMLReader::END_ELEMENT) //Stop on </style:style>
+							($xml->name !== "style:style" || $xml->nodeType != XMLReader::END_ELEMENT) //Stop on </style:style>
 						) {
-							if ($xml->name == "style:text-properties") {
+							if ($xml->name === "style:text-properties") {
 								if ($xml->getAttribute("fo:font-style") == "italic")
 									$styles[$name]["tags"][] = "em"; //Creates the style and add <em> to its tags
 
@@ -237,10 +238,10 @@ class Ophir
 						while ( $xml->read() && //Read one tag
 							($xml->name != "text:note" || $xml->nodeType != XMLReader::END_ELEMENT) //Stop on </style:style>
 						) {
-							if ($xml->name=="text:note-citation" &&
-								$xml->nodeType == XMLReader::ELEMENT)
+							if ($xml->name === "text:note-citation" &&
+								$xml->nodeType === XMLReader::ELEMENT)
 								$note_name = $xml->readString();
-							elseif ($xml->name=="text:note-body" &&
+							elseif ($xml->name === "text:note-body" &&
 								$xml->nodeType == XMLReader::ELEMENT) {
 								$note_content = odt2html($odt_file, $xml->readOuterXML());
 							}
@@ -264,20 +265,20 @@ class Ophir
 						$annotation_content = "";
 						$annotation_creator = "Anonymous";
 						$annotation_date = "";
-						do{
+						do {
 							$xml->read();
-							if ($xml->name=="dc:creator" &&
-								$xml->nodeType == XMLReader::ELEMENT)
+							if ($xml->name === "dc:creator" &&
+									$xml->nodeType == XMLReader::ELEMENT)
 								$annotation_creator = $xml->readString();
-							elseif ($xml->name=="dc:date" &&
-								$xml->nodeType == XMLReader::ELEMENT) {
+							elseif ($xml->name === "dc:date" &&
+											$xml->nodeType === XMLReader::ELEMENT) {
 								$annotation_date = date("jS \of F Y, H\h i\m", strtotime($xml->readString()));
 							}
-							elseif ($xml->nodeType == XMLReader::ELEMENT) {
+							elseif ($xml->nodeType === XMLReader::ELEMENT) {
 								$annotation_content .= $xml->readString();
 								$xml->next();
 							}
-						}while (!($xml->name === "office:annotation" &&
+						} while (!($xml->name === "office:annotation" &&
 							$xml->nodeType === XMLReader::END_ELEMENT));//End of the note
 
 						$html .= '<sup><a href="#odt-annotation-' . $annotation_id . '" name="anchor-odt-annotation-' . $annotation_id . '" title="Annotation (' . $annotation_creator . ')">(' . $annotation_id . ')</a></sup>';

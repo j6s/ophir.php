@@ -8,6 +8,7 @@
  */
 
 namespace lovasoa;
+use \XMLReader;
 
 class Ophir
 {

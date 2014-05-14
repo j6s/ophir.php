@@ -329,7 +329,6 @@ class Ophir
 				$current_element_style = $xml->getAttribute("text:style-name");
 				if ($current_element_style &&
 					isset($styles[$current_element_style])) {
-					error_log(print_r($styles[$current_element_style],true));
 					//Styling tags management
 					foreach ($styles[$current_element_style]["tags"] as $HTML_tag) {
 						$html .= "<" . $HTML_tag . ">";

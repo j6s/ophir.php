@@ -1,4 +1,7 @@
 {
 	"name": "lovasoa/ophir",
-	"description": "Convert ODT (OpenDocument) files to HTML"
+	"description": "Convert ODT (OpenDocument) files to HTML",
+    "require-dev": {
+        "phpunit/phpunit": "~4.1"
+    }
 }

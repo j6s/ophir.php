@@ -73,12 +73,12 @@ class Ophir
 
 		if ($xml_string===NULL){
 			if (@$xml->open('zip://'.$odt_file.'#content.xml') === FALSE) {
-				ophir_error("Unable to read file contents.");
+				$this->error("Unable to read file contents.");
 				return false;
 			}
 		}else{
 			if(@$xml->xml($xml_string)===FALSE) {
-				ophir_error("Invalid file contents.");
+				$this->error("Invalid file contents.");
 				return false;
 			}
 		}
@@ -182,19 +182,19 @@ class Ophir
 						$image_file = 'zip://' . $odt_file . '#' . $xml->getAttribute("xlink:href");
 						if (isset($this->configuration[Ophir::IMAGEFOLDER]) &&
 							is_dir($this->configuration[Ophir::IMAGEFOLDER]) ) {
-							if (ophir_is_image($image_file)) {
+							if ($this->is_image($image_file)) {
 								$image_to_save = $this->configuration[Ophir::IMAGEFOLDER] . '/' . basename($image_file);
-								if ( !($src = ophir_copy_file ($image_file, $image_to_save))) {
-									ophir_error("Unable to move image file");
+								if ( !($src = $this->copy_file($image_file, $image_to_save))) {
+									$this->error("Unable to move image file");
 									break;
 								}
 							} else {
-								ophir_error("Found invalid image file.");
+								$this->error("Found invalid image file.");
 								break;
 							}
 						}
 						else {
-							//ophir_error('Unable to save the image. Creating a data URL. Image saved directly in the body.F');
+							//$this->error('Unable to save the image. Creating a data URL. Image saved directly in the body.F');
 							$src = 'data:image;base64,' . base64_encode(file_get_contents($image_file));
 						}
 						$html .= "\n<img src=\"$src\" />";

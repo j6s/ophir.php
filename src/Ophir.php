@@ -217,13 +217,13 @@ class Ophir
 							($xml->name !== "style:style" || $xml->nodeType != XMLReader::END_ELEMENT) //Stop on </style:style>
 						) {
 							if ($xml->name === "style:text-properties") {
-								if ($xml->getAttribute("fo:font-style") == "italic")
+								if ($xml->getAttribute("fo:font-style") == "italic"  && !in_array("em",$styles[$name]["tags"]))
 									$styles[$name]["tags"][] = "em"; //Creates the style and add <em> to its tags
 
-								if ($xml->getAttribute("fo:font-weight") == "bold")
+								if ($xml->getAttribute("fo:font-weight") == "bold" && !in_array("strong",$styles[$name]["tags"]))
 									$styles[$name]["tags"][] = "strong"; //Creates the style and add <strong> to its tags
 
-								if ($xml->getAttribute("style:text-underline-style") == "solid")
+								if ($xml->getAttribute("style:text-underline-style") == "solid" && !in_array("u",$styles[$name]["tags"]))
 									$styles[$name]["tags"][] = "u"; //Creates the style and add <u> to its tags
 
 							}
@@ -329,6 +329,7 @@ class Ophir
 				$current_element_style = $xml->getAttribute("text:style-name");
 				if ($current_element_style &&
 					isset($styles[$current_element_style])) {
+					error_log(print_r($styles[$current_element_style],true));
 					//Styling tags management
 					foreach ($styles[$current_element_style]["tags"] as $HTML_tag) {
 						$html .= "<" . $HTML_tag . ">";

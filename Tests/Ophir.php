@@ -36,13 +36,13 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 
 	public function testFormattedText(){
 		// fails
-//		$this->assertContains("This is a <strong>bold text</strong>",	$this->html, "testing bold Text");
-//		$this->assertContains("This is a <em>italic text</em>",			$this->html, "testing italic Text");
-//		$this->assertContains("This is a <u>underlined text</u>",		$this->html, "testing underlined Text");
-//
-//		$this->assertContains("This is a <em><strong>bold italic text</strong></em>",	$this->html, "testing bold italic Text");
-//		$this->assertContains("This is a <strong><u>bold underlined text</u></strong>",	$this->html, "testing bold underlined Text");
-//		$this->assertContains("<This is a <em><u>italic underlined text</u></em>>",		$this->html, "testing italic underlined Text");
+		$this->assertContains("This is a <strong>bold text</strong>",	$this->html, "testing bold Text");
+		$this->assertContains("This is a <em>italic text</em>",			$this->html, "testing italic Text");
+		$this->assertContains("This is a <u>underlined text</u>",		$this->html, "testing underlined Text");
+
+		$this->assertContains("This is a <em><strong>bold italic text</strong></em>",	$this->html, "testing bold italic Text");
+		$this->assertContains("This is a <strong><u>bold underlined text</u></strong>",	$this->html, "testing bold underlined Text");
+		$this->assertContains("This is a <em><u>italic underlined text</u></em>",		$this->html, "testing italic underlined Text");
 	}
 
 	public function testLists(){

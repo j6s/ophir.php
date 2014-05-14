@@ -115,6 +115,8 @@ class Ophir
 		}
 		$translation_table['text:line-break'] = 'br';
 
+		$odtStyles = array();
+
 		while ($xml->read()) {
 			$opened_tags = array();//This array will contain the HTML tags opened in every iteration
 
@@ -255,6 +257,18 @@ class Ophir
 						$footnotes .= '</div>' . "\n";
 						break;
 
+					case "text:list-style":
+						$stylename = $xml->getAttribute("style:name");
+						$xml->read();
+
+						if($xml->name == "text:list-level-style-bullet"){
+							$odtStyles[$stylename] = "ul";
+						} elseif($xml->name == "text:list-level-style-number"){
+							$odtStyles[$stylename] = "ol";
+						}
+
+						break;
+
 					case "office:annotation":
 						if ($this->configuration[Ophir::ANNOTATION] === Ophir::NONE) {
 							$xml->next();
@@ -288,6 +302,13 @@ class Ophir
 						$footnotes .= "\n" . '<div class="odt-annotation-content">' . $annotation_content . '</div>';
 						$footnotes .= '</div>' . "\n";
 						break;
+
+					case "text:list":
+						if(!empty($odtStyles[$xml->getAttribute("text:style-name")])){
+							$translation_table["text:list"] = $odtStyles[$xml->getAttribute("text:style-name")];
+						} else {
+							$translation_table["text:list"] = "ul";
+						}
 
 					default:
 						if (array_key_exists($xml->name, $translation_table)) {

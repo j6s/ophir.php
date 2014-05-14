@@ -46,8 +46,7 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testLists(){
-		// fails
-//		$this->assertContains("<ol><li><p>Ordered List</p></li><li><p>wow, so ordered </p></li><li><p>such number</p></li></ol>",	$this->html, "testing ordered Lists");
+		$this->assertContains("<ol><li><p>Ordered List</p></li><li><p>wow, so ordered </p></li><li><p>such number</p></li></ol>",	$this->html, "testing ordered Lists");
 		$this->assertContains("<ul><li><p>unordered List</p></li><li><p>wow, so unordered</p></li><li><p>much messy</p></li></ul>",	$this->html, "testing unordered Lists");
 	}
 

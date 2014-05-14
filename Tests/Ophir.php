@@ -35,7 +35,6 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testFormattedText(){
-		// fails
 		$this->assertContains("This is a <strong>bold text</strong>",	$this->html, "testing bold Text");
 		$this->assertContains("This is a <em>italic text</em>",			$this->html, "testing italic Text");
 		$this->assertContains("This is a <u>underlined text</u>",		$this->html, "testing underlined Text");

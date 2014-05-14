@@ -9,7 +9,6 @@
 
 namespace lovasoa;
 
-
 class Ophir
 {
 	/**
@@ -30,6 +29,9 @@ class Ophir
 	const TOC               = "TOC";
 	const TABLE_OF_CONTENTS = Ophir::TOC;
 
+	const IMAGEFOLDER		= "IMAGEFOLDER";
+	const IMAGE_FOLDER		= Ophir::IMAGEFOLDER;
+
 	/**
 	 * Default configuration
 	 * @var array
@@ -37,13 +39,13 @@ class Ophir
 	private $configuration = array(
 		Ophir::HEADER     => Ophir::ALL,
 		Ophir::LISTS      => Ophir::ALL,
-		Ophir::TABLE      => Ophir::All,
-		Ophir::FOOTNOTE   => Ophir::All,
-		Ophir::LINK       => Ophir::All,
-		Ophir::IMAGE      => Ophir::All,
-		Ophir::NOTE       => Ophir::All,
-		Ophir::ANNOTATION => Ophir::All,
-		Ophir::TOC        => Ophir::NONE
+		Ophir::TABLE      => Ophir::ALL,
+		Ophir::FOOTNOTE   => Ophir::ALL,
+		Ophir::LINK       => Ophir::ALL,
+		Ophir::IMAGE      => Ophir::ALL,
+		Ophir::NOTE       => Ophir::ALL,
+		Ophir::ANNOTATION => Ophir::ALL,
+		Ophir::TOC        => Ophir::NONE,
 	);
 
 
@@ -64,9 +66,7 @@ class Ophir
 	 * Function that parses the XML and outputs HTML. If $xml is not provided,
 	 * extract content.xml from $odt_file
 	 */
-	// @TODO use new configuration in this function
 	public function odt2html($odt_file, $xml_string=NULL) {
-		global $_ophir_odt_import_conf;
 
 		$xml = new XMLReader();
 
@@ -93,19 +93,19 @@ class Ophir
 
 		$translation_table = array ();
 		$translation_table['draw:frame'] = 'div class="odt-frame"';
-		if ($_ophir_odt_import_conf["features"]["list"]===0) $translation_table["text:list"] = FALSE;
-		elseif ($_ophir_odt_import_conf["features"]["list"]===2) {
+		if ($this->configuration[Ophir::LISTS] === Ophir::NONE) $translation_table["text:list"] = FALSE;
+		elseif ($this->configuration[Ophir::LISTS] === Ophir::ALL) {
 			$translation_table["text:list"] = "ul";
 			$translation_table["text:list-item"] = "li";
 		}
-		if ($_ophir_odt_import_conf["features"]["table"]===0) $translation_table["table:table"] = FALSE;
-		elseif ($_ophir_odt_import_conf["features"]["table"]===2) {
+		if ($this->configuration[Ophir::TABLE] === Ophir::NONE) $translation_table["table:table"] = FALSE;
+		elseif ($this->configuration[Ophir::TABLE] === Ophir::ALL) {
 			$translation_table["table:table"] = "table cellspacing=0 cellpadding=0 border=1";
 			$translation_table["table:table-row"] = "tr";
 			$translation_table["table:table-cell"] = "td";
 		}
-		if ($_ophir_odt_import_conf["features"]["table of contents"]===0) $translation_table['text:table-of-content'] = FALSE;
-		elseif ($_ophir_odt_import_conf["features"]["table of contents"]===2) {
+		if ($this->configuration[Ophir::TOC] === Ophir::NONE) $translation_table['text:table-of-content'] = FALSE;
+		elseif ($this->configuration[Ophir::TOC] === Ophir::ALL) {
 			$translation_table['text:table-of-content'] = 'div class="odt-table-of-contents"';
 		}
 		$translation_table['text:line-break'] = 'br';
@@ -139,11 +139,11 @@ class Ophir
 						$html .= htmlspecialchars($xml->value);
 						break;
 					case "text:h"://Title
-						if ($_ophir_odt_import_conf["features"]["header"]===0) {
+						if ($this->configuration[Ophir::HEADER] === Ophir::NONE) {
 							$xml->next();
 							break;
 						}
-						elseif ($_ophir_odt_import_conf["features"]["header"]===1) break;
+						elseif ($this->configuration[Ophir::HEADER] === Ophir::SIMPLE) break;
 						$n = $xml->getAttribute("text:outline-level");
 						if ($n>6) $n=6;
 						$opened_tags[] = "h$n";
@@ -161,28 +161,28 @@ class Ophir
 						break;
 
 					case "text:a":
-						if ($_ophir_odt_import_conf["features"]["link"]===0) {
+						if ($this->configuration[Ophir::LINK] === Ophir::NONE) {
 							$xml->next();
 							break;
 						}
-						elseif ($_ophir_odt_import_conf["features"]["link"]===1) break;
+						elseif ($this->configuration[Ophir::LINK] === Ophir::SIMPLE) break;
 						$href = $xml->getAttribute("xlink:href");
 						$opened_tags[] = 'a';
 						$html .= '<a href="' . $href . '">';
 						break;
 
 					case "draw:image":
-						if ($_ophir_odt_import_conf["features"]["image"]===0) {
+						if ($this->configuration[Ophir::IMAGE] === Ophir::NONE) {
 							$xml->next();
 							break;
 						}
-						elseif ($_ophir_odt_import_conf["features"]["image"]===1) break;
+						elseif ($this->configuration[Ophir::IMAGE] === Ophir::NONE) break;
 
 						$image_file = 'zip://' . $odt_file . '#' . $xml->getAttribute("xlink:href");
-						if (isset($_ophir_odt_import_conf["images_folder"]) &&
-							is_dir($_ophir_odt_import_conf["images_folder"]) ) {
+						if (isset($this->configuration[Ophir::IMAGEFOLDER]) &&
+							is_dir($this->configuration[Ophir::IMAGEFOLDER]) ) {
 							if (ophir_is_image($image_file)) {
-								$image_to_save = $_ophir_odt_import_conf["images_folder"] . '/' . basename($image_file);
+								$image_to_save = $this->configuration[Ophir::IMAGEFOLDER] . '/' . basename($image_file);
 								if ( !($src = ophir_copy_file ($image_file, $image_to_save))) {
 									ophir_error("Unable to move image file");
 									break;
@@ -222,11 +222,11 @@ class Ophir
 						}
 						break;
 					case "text:note":
-						if ($_ophir_odt_import_conf["features"]["note"]===0) {
+						if ($this->configuration[Ophir::NOTE] === Ophir::NONE) {
 							$xml->next();
 							break;
 						}
-						elseif ($_ophir_odt_import_conf["features"]["note"]===1) break;
+						elseif ($this->configuration[Ophir::NOTE] === Ophir::SIMPLE) break;
 						$note_id = $xml->getAttribute("text:id");
 						$note_name = "Note";
 						while ( $xml->read() && //Read one tag
@@ -250,11 +250,11 @@ class Ophir
 						break;
 
 					case "office:annotation":
-						if ($_ophir_odt_import_conf["features"]["annotation"]===0) {
+						if ($this->configuration[Ophir::ANNOTATION] === Ophir::NONE) {
 							$xml->next();
 							break;
 						}
-						elseif ($_ophir_odt_import_conf["features"]["annotation"]===1) break;
+						elseif ($this->configuration[Ophir::ANNOTATION] === Ophir::SIMPLE) break;
 						$annotation_id = (isset($annotation_id))?$annotation_id+1:1;
 						$annotation_content = "";
 						$annotation_creator = "Anonymous";

@@ -49,6 +49,10 @@ class Ophir
 		Ophir::TOC        => Ophir::NONE,
 	);
 
+	public function getConfiguration(){
+		return $this->configuration;
+	}
+
 
 	/**
 	 * @param String $option

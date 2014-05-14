@@ -243,7 +243,7 @@ class Ophir
 								$note_name = $xml->readString();
 							elseif ($xml->name === "text:note-body" &&
 								$xml->nodeType == XMLReader::ELEMENT) {
-								$note_content = odt2html($odt_file, $xml->readOuterXML());
+								$note_content = $this->odt2html($odt_file, $xml->readOuterXML());
 							}
 						}
 

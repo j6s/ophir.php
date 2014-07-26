@@ -22,7 +22,6 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 		$this->ophir->setConfiguration(Ophir::FOOTNOTE,		Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::LINK,			Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::IMAGE,		Ophir::ALL);
-		$this->ophir->setConfiguration(Ophir::NOTE,			Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::ANNOTATION, 	Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::TOC,			Ophir::ALL);
 
@@ -33,7 +32,10 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 	}
 	public function testSimpleText(){
 		$this->assertContains("<p>This is a simple text Paragraph</p>",$this->html, "testing simple Text");
+	}
 
+	public function testTableOfContents(){
+		$this->assertContains("Table of Contents",$this->html);
 	}
 
 	public function testFormattedText(){
@@ -46,23 +48,28 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 		$this->assertContains("This is a <em><u>italic underlined text</u></em>",		$this->html, "testing italic underlined Text");
 	}
 
-	public function testLists(){
-		$this->assertContains("<ol><li><p>Ordered List</p></li><li><p>wow, so ordered </p></li><li><p>such number</p></li></ol>",	$this->html, "testing ordered Lists");
-		$this->assertContains("<ul><li><p>unordered List</p></li><li><p>wow, so unordered</p></li><li><p>much messy</p></li></ul>",	$this->html, "testing unordered Lists");
+	public function testOrderedLists(){
+		$toTest = "	<ol>
+						<li><p>Ordered List</p></li>
+						<li><p>wow, so ordered </p></li>
+						<li><p>such number</p></li>
+					</ol>";
+		$toTest = str_replace(array("\n","\r","\t"), "", $toTest);
+		$this->assertContains($toTest,	$this->html, "testing ordered Lists");
+	}
+
+	public function testUnorderedLists(){
+		$toTest = "	<ul>
+						<li><p>unordered List</p></li>
+						<li><p>wow, so unordered</p></li>
+						<li><p>much messy</p></li>
+					</ul>";
+		$toTest = str_replace(array("\n","\r","\t"), "", $toTest);
+		$this->assertContains($toTest,	$this->html, "testing ordered Lists");
 	}
 
 	public function testImage(){
 		$this->assertContains(base64_encode(file_get_contents(__DIR__."/image.jpg")),$this->html);
-	}
-
-	public function testHeader(){
-		// fails
-//		$this->assertContains("This is a header",	$this->html, "testing headers");
-	}
-
-	public function testFooter(){
-		// fails
-//		$this->assertContains("This is a footer",	$this->html, "testing footers");
 	}
 
 	public function testLink(){
@@ -73,15 +80,37 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 		$this->assertContains('This is a annotation',$this->html);
 	}
 
-	public function testNote(){
-		// fails
-//		$this->assertContains('This is a footnote', $this->html);
+	public function testFootnote(){
+		$this->assertContains('This is a footnote', $this->html);
 	}
 
 	public function testHeadings(){
 		$this->assertContains("<h1>This is a h1</h1>",$this->html,"testing h1");
 		$this->assertContains("<h2>This is a h2</h2>",$this->html,"testing h2");
 		$this->assertContains("<h3>This is a h3</h3>",$this->html,"testing h3");
+	}
+
+	public function testTables(){
+		$toTest = "	<table cellspacing=0 cellpadding=0 border=1>
+						<tr>
+							<td><p>So</p></td>
+							<td><p>Much</p></td>
+							<td><p>Table</p></td>
+						</tr>
+						<tr>
+							<td><p>Going</p></td>
+							<td><p>On</p></td>
+							<td><p>In</p></td>
+						</tr>
+						<tr>
+							<td><p>This</p></td>
+							<td><p>Particular</p>
+							</td><td><p>File</p></td>
+						</tr>
+					</table>";
+		$toTest = str_replace(array("\n","\r","\t"), "", $toTest);
+
+		$this->assertContains($toTest,$this->html,"testing tables");
 	}
 
 	public function testsetConfiguration(){
@@ -91,7 +120,6 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 		$this->ophir->setConfiguration(Ophir::FOOTNOTE,		Ophir::NONE);
 		$this->ophir->setConfiguration(Ophir::LINK,			Ophir::NONE);
 		$this->ophir->setConfiguration(Ophir::IMAGE,		Ophir::NONE);
-		$this->ophir->setConfiguration(Ophir::NOTE,			Ophir::NONE);
 		$this->ophir->setConfiguration(Ophir::ANNOTATION, 	Ophir::NONE);
 		$this->ophir->setConfiguration(Ophir::TOC,			Ophir::NONE);
 
@@ -105,7 +133,6 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 		$this->ophir->setConfiguration(Ophir::FOOTNOTE,		Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::LINK,			Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::IMAGE,		Ophir::ALL);
-		$this->ophir->setConfiguration(Ophir::NOTE,			Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::ANNOTATION, 	Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::TOC,			Ophir::ALL);
 

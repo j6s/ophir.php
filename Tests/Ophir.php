@@ -6,6 +6,8 @@
  * Time: 20:10
  */
 namespace lovasoa;
+include("src/Ophir.php");
+date_default_timezone_set("Europe/Berlin");
 
 
 class OphirTest extends \PHPUnit_Framework_TestCase{
@@ -14,7 +16,7 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 		$this->ophir = new \lovasoa\Ophir();
 
 		// enable everything
-		$this->ophir->setConfiguration(Ophir::HEADER,		Ophir::ALL);
+		$this->ophir->setConfiguration(Ophir::HEADINGS,		Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::LISTS,		Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::TABLE,		Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::FOOTNOTE,		Ophir::ALL);
@@ -83,7 +85,7 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 	}
 
 	public function testsetConfiguration(){
-		$this->ophir->setConfiguration(Ophir::HEADER,		Ophir::NONE);
+		$this->ophir->setConfiguration(Ophir::HEADINGS,		Ophir::NONE);
 		$this->ophir->setConfiguration(Ophir::LISTS,		Ophir::NONE);
 		$this->ophir->setConfiguration(Ophir::TABLE,		Ophir::NONE);
 		$this->ophir->setConfiguration(Ophir::FOOTNOTE,		Ophir::NONE);
@@ -97,7 +99,7 @@ class OphirTest extends \PHPUnit_Framework_TestCase{
 			$this->assertEquals(Ophir::NONE,$value);
 		}
 
-		$this->ophir->setConfiguration(Ophir::HEADER,		Ophir::ALL);
+		$this->ophir->setConfiguration(Ophir::HEADINGS,		Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::LISTS,		Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::TABLE,		Ophir::ALL);
 		$this->ophir->setConfiguration(Ophir::FOOTNOTE,		Ophir::ALL);

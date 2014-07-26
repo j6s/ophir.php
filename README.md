@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/thephpjo/ophir.php.svg?branch=dev)](https://travis-ci.org/thephpjo/ophir.php)
 # Ophir.php
 ## PHP script that converts ODT to HTML
 ophir.php is a lightweight script that parses an <b>open document</b> file and outputs a <b><i>simple</i> HTML</b> file, with very few tags (contrarily to most other tools that do the same thing).

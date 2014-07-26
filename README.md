@@ -27,19 +27,39 @@ This script requires libzip and XMLReader, that are usually installed by default
 If you meet these requirements, just put ophir.php on your server, and use it like that:
 
 ```php
-require("ophir.php");
+require("src/ophir.php");
 
-$OPHIR_CONF["footnote"] = 0; //Do not import footnotes
-$OPHIR_CONF["annotation"] = 0; //Do not import annotations
+$ophir = new \lovasoa\Ophir();
 
-$OPHIR_CONF["list"] = 1; //Import lists, but prints them as simple text (no ul or li tags will be generated)
-$OPHIR_CONF["link"] = 1; //Import links, but prints them as simple text (only extract text from the links)
+$ophir->setConfiguration(Ophir::FOOTNOTE,		Ophir::NONE); //Do not import footnotes
+$ophir->setConfiguration(Ophir::ANNOTATION,		Ophir::NONE); //Do not import annotations
 
-/*Available parameters are:
-"header", "quote", "list", "table", "footnote", "link", "image", "note", and "annotation"
+$ophir->setConfiguration(Ophir::LISTS,			Ophir::SIMPLE); //Import lists, but prints them as simple text (no ul or li tags will be generated)
+$ophir->setConfiguration(Ophir::LINK,			Ophir::SIMPLE); //Import links, but prints them as simple text (only extract text from the links)
+
+$ophir->setConfiguration(Ophir::IMAGE,			Ophir::ALL);	// Display all the images
+
+/*
+Available features are:
+Ophir::HEADINGS
+Ophir::LISTS
+Ophir::TABLE
+Ophir::FOOTNOTE
+Ophir::LINK
+Ophir::IMAGE
+Ophir::NOTE
+Ophir::ANNOTATION
+Ophir::TABLE_OF_CONTENTS
+
+Available modes are:
+Ophir::ALL 		// print feature completely
+Ophir::SIMPLE 	// only print text-content
+Ophir::NONE 	// ignore: Do not echo content
+
+$ophir->setConfiguration({FEATURE},{MODE});
 */
 
-echo odt2html("/path/to/file.odt");
+echo $ophir->odt2html("/path/to/file.odt");
 ```
 
 

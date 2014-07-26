@@ -44,7 +44,6 @@ class Ophir
 		Ophir::FOOTNOTE   => Ophir::ALL,
 		Ophir::LINK       => Ophir::ALL,
 		Ophir::IMAGE      => Ophir::ALL,
-		Ophir::NOTE       => Ophir::ALL,
 		Ophir::ANNOTATION => Ophir::ALL,
 		Ophir::TOC        => Ophir::NONE,
 	);
@@ -230,11 +229,11 @@ class Ophir
 						}
 						break;
 					case "text:note":
-						if ($this->configuration[Ophir::NOTE] === Ophir::NONE) {
+						if ($this->configuration[Ophir::FOOTNOTE] === Ophir::NONE) {
 							$xml->next();
 							break;
 						}
-						elseif ($this->configuration[Ophir::NOTE] === Ophir::SIMPLE) break;
+						elseif ($this->configuration[Ophir::FOOTNOTE] === Ophir::SIMPLE) break;
 						$note_id = $xml->getAttribute("text:id");
 						$note_name = "Note";
 						while ( $xml->read() && //Read one tag

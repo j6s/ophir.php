@@ -19,7 +19,7 @@ class Ophir
 	const SIMPLE = 1;
 	const NONE   = 0;
 
-	const HEADER            = "HEADER";
+	const HEADINGS         	= "HEADINGS";
 	const LISTS             = "LISTS";
 	const TABLE             = "TABLE";
 	const FOOTNOTE          = "FOOTNOTE";
@@ -38,7 +38,7 @@ class Ophir
 	 * @var array
 	 */
 	private $configuration = array(
-		Ophir::HEADER     => Ophir::ALL,
+		Ophir::HEADINGS   => Ophir::ALL,
 		Ophir::LISTS      => Ophir::ALL,
 		Ophir::TABLE      => Ophir::ALL,
 		Ophir::FOOTNOTE   => Ophir::ALL,
@@ -146,11 +146,11 @@ class Ophir
 						$html .= htmlspecialchars($xml->value);
 						break;
 					case "text:h"://Title
-						if ($this->configuration[Ophir::HEADER] === Ophir::NONE) {
+						if ($this->configuration[Ophir::HEADINGS] === Ophir::NONE) {
 							$xml->next();
 							break;
 						}
-						elseif ($this->configuration[Ophir::HEADER] === Ophir::SIMPLE) break;
+						elseif ($this->configuration[Ophir::HEADINGS] === Ophir::SIMPLE) break;
 						$n = $xml->getAttribute("text:outline-level");
 						if ($n>6) $n=6;
 						$opened_tags[] = "h$n";

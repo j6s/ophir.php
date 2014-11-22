@@ -1,4 +1,9 @@
 {
 	"name": "lovasoa/ophir",
-	"description": "Convert ODT (OpenDocument) files to HTML"
+	"description": "Convert ODT (OpenDocument) files to HTML",
+    "autoload": {
+        "psr-4": {
+            "lovasoa\\ophir\\": "src"
+        }
+    }
 }

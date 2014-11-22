@@ -1,22 +1,23 @@
 # Ophir.php <span style="float: right;">[![Build Status](https://travis-ci.org/thephpjo/ophir.php.svg?branch=dev)](https://travis-ci.org/thephpjo/ophir.php)</span>
 ## PHP script that converts ODT to HTML
-ophir.php is a lightweight script that parses an <b>open document</b> file and outputs a <b><i>simple</i> HTML</b> file, with very few tags (contrarily to most other tools that do the same thing).
+ophir.php is a lightweight script that parses an <b>open document</b> file and outputs a 
+<b><i>simple</i> HTML</b> string, with very few tags (contrarily to most other tools that do the same thing).
 
 ## Features
 Currently, the script can convert the following:
- - bold (```<strong>``` tag)
- - italic (```<i>``` tag)
- - underline (```<u>``` tag)
- - quotations (```<blockquote>``` tag)
- - images (using data URIs)
+ - Text Formatting (__bold__, _italic_, _(<u>underlined</u>)_
+ - images (using data URIs or extracting them into a seperate folder)
  - links
  - headings (h1, h2, ...)
  - lists (ul and li)
  - tables (table tr and td)
- - annotations
- - footnotes.
+ - _(annotations)_
+ - _(footnotes)_
 
-Ophir.php can also **ignore** or **remove** some tags on demand. This can be useful if you want to extract *only unformatted text* from a document, or if you don't want tables, footnotes or annotations in the resulting HTML, or if the application that generated the ODT file produced unnecessary formatting informations ...
+Ophir.php can also **ignore** or **remove** some tags on demand.
+This can be useful if you want to extract *only unformatted text* from a document,
+or if you don't want tables, footnotes or annotations in the resulting HTML,
+or if the application that generated the ODT file produced unnecessary formatting informations ...
 
 ## Limitations
 Everything that is not mentioned in the feature section is not supported.
@@ -26,9 +27,9 @@ This script requires libzip and XMLReader, that are usually installed by default
 If you meet these requirements, just put ophir.php on your server, and use it like that:
 
 ```php
-require("src/ophir.php");
+require("vendor/autoload.php");
 
-$ophir = new \lovasoa\Ophir();
+$ophir = new \lovasoa\ophir\Ophir();
 
 $ophir->setConfiguration(Ophir::FOOTNOTE,		Ophir::NONE); //Do not import footnotes
 $ophir->setConfiguration(Ophir::ANNOTATION,		Ophir::NONE); //Do not import annotations
@@ -48,7 +49,6 @@ Ophir::LINK
 Ophir::IMAGE
 Ophir::NOTE
 Ophir::ANNOTATION
-Ophir::TABLE_OF_CONTENTS
 
 Available modes are:
 Ophir::ALL 		// print feature completely
@@ -77,3 +77,39 @@ This script was coded in one afternoon to answer to my personal needs. More prof
  - http://www.artofsolving.com/opensource/jodconverter (in java)
 
  -  http://www.openoffice.org/udk/python/python-bridge.html (in Python)
+
+
+# UNDER CONSTRUCTION
+Ophir.php is currently being developed actively.
+
+Current limitations:
+- annotations and footnotes are treated as paragraphs
+    - we have to think about how to display these. Maybe add a special class?
+- underlined text is not working
+    - The ODT definition does not map to the CSS Definition
+    ```XML
+    <!-- ODT XML -->
+    <style:style style:name="T6" style:family="text">
+        <style:text-properties  style:text-underline-style="solid"
+                                style:text-underline-width="auto"
+                                style:text-underline-color="font-color"/>
+    </style:style>
+    ```
+    ```CSS
+    // CSS
+    .ophir-T6 {
+        text-decoration: underline;
+    }
+    ```
+- floated text is not working
+    - OphirHelper::getStyleStyle has to also interpret the style:paragraph-properties element inside of it
+    ```XML
+    <!-- ODT XML -->
+            <style:style style:name="P11" style:family="paragraph" style:parent-style-name="Standard">
+                <style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
+                <!-- (...) -->
+            </style:style>
+    ```
+- Tests are failing at the moment. They have to be rewritten
+
+If you have solutions to these problems, please open a issue or create a pull-request

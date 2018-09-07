@@ -169,6 +169,10 @@ function odt2html($odt_file, $xml_string=NULL) {
           $html .= '<a href="' . $href . '">';
           break;
 
+  	case "text:tab":
+          $html .= '&nbsp;&nbsp;&nbsp;&nbsp;';
+          break;
+
         case "draw:image":
           if ($_ophir_odt_import_conf["features"]["image"]===0) {
             $xml->next();
